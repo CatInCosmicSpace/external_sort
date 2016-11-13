@@ -1,6 +1,6 @@
 #include "external_sort.h"
 
-extern inline auto external_sort(std::string const file_name, const std::string output_name, uint_fast64_t const memory_size) -> void {
+auto external_sort(std::string const file_name, const std::string output_name, uint_fast64_t const memory_size) -> void {
 	auto size_of_file = file_size(file_name);
 	data tmp;
 	std::vector<data> data_to_sort;
@@ -46,7 +46,6 @@ extern inline auto external_sort(std::string const file_name, const std::string 
 	while (pieces > 1) {
 		size_t i;
 		for (i = 1; i < pieces; i += 2) {
-			std::cout << "Merging " << to_string(i - 1) << " and " << to_string(i) << " into " << to_string((i / 2) + 100) << std::endl;
 			std::ifstream first_temp_file, second_temp_file;
 			std::ofstream sorted;
 			first_temp_file.open(to_string(i - 1));
@@ -62,11 +61,9 @@ extern inline auto external_sort(std::string const file_name, const std::string 
 			std::remove(to_string(i - 1).c_str());
 			std::remove(to_string(i).c_str());
 			std::rename(to_string((i / 2) + 100).c_str(), to_string(i / 2).c_str());
-			std::cout << "Renaming " << to_string((i / 2) + 100) << " into " << to_string(i / 2) << std::endl;
 		}
 		std::ifstream temp_file(to_string(i - 1));
 		if (temp_file.is_open()) {
-			std::cout << "Merging into extra file: " << to_string(i - 1) << std::endl;
 			std::ofstream extra_temp_file("extra_temp.txt");
 			merge_files(temp_file, extra_file, extra_temp_file);
 			temp_file.close();
@@ -79,7 +76,6 @@ extern inline auto external_sort(std::string const file_name, const std::string 
 		}
 		pieces = i / 2;
 	}
-	std::cout << "Final merging" << std::endl;
 	std::ifstream result_file(to_string(0));
 	std::ofstream sorted_file(output_name);
 	merge_files(result_file, extra_file, sorted_file);
@@ -90,7 +86,7 @@ extern inline auto external_sort(std::string const file_name, const std::string 
 	std::remove("extra.txt");
 }
 
-extern inline auto file_size(const std::string filename) -> uint_fast64_t {
+auto file_size(const std::string filename) -> uint_fast64_t {
 	std::ifstream file(filename.c_str(), std::ifstream::in | std::ifstream::binary);
 
 	if (!file.is_open()) {
@@ -104,7 +100,7 @@ extern inline auto file_size(const std::string filename) -> uint_fast64_t {
 	return size;
 }
 
-extern inline auto gen_file(std::string file_name, uint_fast64_t file_size) -> void {
+auto gen_file(std::string file_name, uint_fast64_t file_size) -> void {
 	std::string first_names[] = { "Иван", "Петр", "Сидор", "Леха", "Саня", "Евгений", "Зло", "Артур" };
 	std::string last_names[] = { "Иванов", "Петров", "Сидоров",	"Гарбузов", "Савельев", "Ермаков",
 		"Кудашов", "Никитин", "Юшкевич", "Полотнянко", "Новиков" };
@@ -123,7 +119,7 @@ extern inline auto gen_file(std::string file_name, uint_fast64_t file_size) -> v
 	}
 }
 
-extern inline auto merge_files(std::ifstream & first_file, std::ifstream & second_file, std::ofstream & sorted) -> void  {
+auto merge_files(std::ifstream & first_file, std::ifstream & second_file, std::ofstream & sorted) -> void  {
 	data temp1, temp2;
 	if (sorted.good() && first_file.good() && second_file.good()) {
 		first_file >> temp1.last_name >> temp1.first_name >> temp1.year;
@@ -152,7 +148,7 @@ extern inline auto merge_files(std::ifstream & first_file, std::ifstream & secon
 	}
 }
 
-extern inline auto to_string(size_t sz) -> std::string {
+auto to_string(size_t sz) -> std::string {
 	std::stringstream ss;
 	ss << sz << ".txt";
 
