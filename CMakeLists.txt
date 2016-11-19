@@ -1,15 +1,28 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5.2)
 
-project(external_sort)
+project(catch_builder CXX)
+include(ExternalProject)
+find_package(Git REQUIRED)
 
-set (CMAKE_CXX_FLAGS "-std=c++1y -static-libgcc -static-libstdc++")
+ExternalProject_Add(
+    catch
+    PREFIX ${CMAKE_BINARY_DIR}/catch
+    GIT_REPOSITORY https://github.com/philsquared/Catch.git
+    TIMEOUT 10
+    UPDATE_COMMAND ${GIT_EXECUTABLE} pull
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+    LOG_DOWNLOAD ON
+)
 
-set(SOURCE_EXE main.cpp)
-
-include_directories(lib)
-
-add_executable(external_sort ${SOURCE_EXE})
-
-add_subdirectory(lib)
-
-target_link_libraries(external_sort ext_sort_lib)
+ExternalProject_Get_Property(catch source_dir)
+set(CATCH_INCLUDE_DIR ${source_dir}/include CACHE INTERNAL "Path to include folder for Catch")
+PROJECT(${GLOBAL_PROJECT_NAME})
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fdiagnostics-color=always")
+include_directories("include")
+add_subdirectory(sources)
+include_directories(${CATCH_INCLUDE_DIR})
+enable_testing(true)
+add_subdirectory(tests)
