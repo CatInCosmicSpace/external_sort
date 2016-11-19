@@ -26,7 +26,7 @@ SCENARIO("Very small", "[sort_very_small_file]") {
 }
 
 SCENARIO("Small", "[sort_small_file]") {
-	external_sort("random_small.txt", "output_small.txt", 64 * 1024);
+	external_sort("random_small.txt", "output_small.txt", 64 * 1023);
 
 	std::ifstream expected("expected_small.txt");
 	std::ifstream output("output_small.txt");
@@ -50,7 +50,7 @@ SCENARIO("Small", "[sort_small_file]") {
 }
 
 SCENARIO("Medium", "[sort_medium_file]") {
-	external_sort("random_medium.txt", "output_medium.txt", 1024 * 1024 * 4);
+	external_sort("random_medium.txt", "output_medium.txt", 56781 * 4);
 
 	std::ifstream expected("expected_medium.txt");
 	std::ifstream output("output_medium.txt");
