@@ -12,6 +12,15 @@ struct data {
 	std::string last_name;
 	std::string first_name;
 	uint16_t year;
+	
+	auto operator<(data const & data) const -> bool {
+		return  std::make_pair(last_name, first_name)
+			<   std::make_pair(data.last_name, data.first_name);
+	}
+	auto operator<=(data const & data) const -> bool {
+		return      std::make_pair(static_cast<std::string>(last_name), static_cast<std::string>(first_name))
+			<=   std::make_pair(static_cast<std::string>(data.last_name), static_cast<std::string>(data.first_name));
+	}
 };
 
 auto external_sort(const std::string file_name, const std::string output_name, const uint_fast64_t memory_size) -> void;
