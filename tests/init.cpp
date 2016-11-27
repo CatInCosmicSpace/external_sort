@@ -1,4 +1,4 @@
-#include "external_sort.h"
+#include "external_sort.hpp"
 #include <catch.hpp>
 
 SCENARIO("file - 8 mb, memory - 1 mb", "[8 - 1]") {
