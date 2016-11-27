@@ -10,10 +10,12 @@ SCENARIO("file - 8 mb, memory - 1 mb", "[8 - 1]") {
 	bool check = false;
 	output_second >> first.last_name >> first.first_name >> first.year;
 	while (output_second) {
-		check = true;
 		output_first >> first.last_name >> first.first_name >> first.year;
 		output_second >> second.last_name >> second.first_name >> second.year;
-		if (!output_second) break;
+		if (!output_second) { 
+			check = true;
+			break;
+		}
 		if (!(first <= second)) {
 			output_first.close();
 			output_second.close();
@@ -35,10 +37,12 @@ SCENARIO("file - 15 mb, memory - 4 mb", "[15 - 4]") {
 	bool check = false;
 	output_second >> first.last_name >> first.first_name >> first.year;
 	while (output_second) {
-		check = true;
 		output_first >> first.last_name >> first.first_name >> first.year;
 		output_second >> second.last_name >> second.first_name >> second.year;
-		if (!output_second) break;
+		if (!output_second) { 
+			check = true;
+			break;
+		}
 		if (!(first <= second)) {
 			output_first.close();
 			output_second.close();
@@ -60,10 +64,12 @@ SCENARIO("file - 32 mb, memory - 17 mb", "[32 - 17]") {
 	bool check = false;
 	output_second >> first.last_name >> first.first_name >> first.year;
 	while (output_second) {
-		check = true;
 		output_first >> first.last_name >> first.first_name >> first.year;
 		output_second >> second.last_name >> second.first_name >> second.year;
-		if (!output_second) break;
+		if (!output_second) { 
+			check = true;
+			break;
+		}
 		if (!(first <= second)) {
 			output_first.close();
 			output_second.close();
