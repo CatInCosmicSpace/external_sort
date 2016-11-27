@@ -23,6 +23,7 @@ SCENARIO("file - 8 mb, memory - 1 mb", "[8 - 1]") {
 	}
 
 	REQUIRE(flag);
+	REQUIRE(check);
 }
 
 SCENARIO("file - 15 mb, memory - 4 mb", "[15 - 4]") {
@@ -47,6 +48,7 @@ SCENARIO("file - 15 mb, memory - 4 mb", "[15 - 4]") {
 	}
 
 	REQUIRE(flag);
+	REQUIRE(check);
 }
 
 SCENARIO("file - 32 mb, memory - 17 mb", "[32 - 17]") {
@@ -71,4 +73,5 @@ SCENARIO("file - 32 mb, memory - 17 mb", "[32 - 17]") {
 	}
 
 	REQUIRE(flag);
+	REQUIRE(check);
 }
