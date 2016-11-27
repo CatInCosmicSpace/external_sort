@@ -20,12 +20,12 @@ auto gen_file(const std::string file_name, const uint_fast64_t file_size) -> voi
 
 auto to_string(const size_t sz) -> const std::string;
 
-auto external_sort(std::string const file_name, const std::string output_name, uint_fast64_t const memory_size) -> void {
+auto external_sort(const std::string && file_name, const std::string && output_name, const uint_fast64_t && memory_size) -> void {
 	std::ifstream input(file_name);
 	if (input.bad()) {
 		throw std::bad_exception();
 	}
-	size_t subpieces = memory_size / sizeof(std::string);
+	size_t subpieces = memory_size / 105;
 
 	size_t pieces;
 	{
@@ -98,6 +98,7 @@ auto external_sort(std::string const file_name, const std::string output_name, u
 	}
 }
 
+
 auto gen_file(const std::string file_name, const uint_fast64_t file_size) -> void {
 	std::string first_names[] = { "Jake", "Mike", "John", "James", "Carl","Daryl", "Rick", "Sam" };
 	std::string last_names[] = { "Shepard", "Sparrow", "Kennedy", "Klain", "Ivanov", "Petrov",
@@ -108,7 +109,7 @@ auto gen_file(const std::string file_name, const uint_fast64_t file_size) -> voi
 		while (file.tellp() < file_size) {
 			file << last_names[rand() % 11].data() << " "
 				<< first_names[rand() % 8].data() << " "
-				<< 1950 + rand() % 2016 << std::endl;
+				<< 1950 + rand() % 2016 << "\n";
 		}
 		file.close();
 	}
@@ -117,9 +118,9 @@ auto gen_file(const std::string file_name, const uint_fast64_t file_size) -> voi
 	}
 }
 
-auto to_string(size_t sz) -> const std::string {
+auto to_string(const size_t sz) -> const std::string{
 	std::stringstream ss;
-	ss << sz << ".txt";
+ss << sz << ".tmp";
 
-	return ss.str();
+return ss.str();
 }
