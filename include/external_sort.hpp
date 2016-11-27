@@ -23,7 +23,7 @@ struct data {
 	}
 };
 
-auto external_sort(const std::string file_name, const std::string output_name, const uint_fast64_t memory_size) -> void;
+auto external_sort(const std::string && file_name, const std::string && output_name, const uint_fast64_t && memory_size) -> void;
 
 auto gen_file(const std::string file_name, const uint_fast64_t file_size) -> void;
 
