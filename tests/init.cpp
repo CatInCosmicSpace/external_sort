@@ -52,7 +52,7 @@ SCENARIO("file - 15 mb, memory - 4 mb", "[15 - 4]") {
 }
 
 SCENARIO("file - 32 mb, memory - 17 mb", "[32 - 17]") {
-	external_sort("15", "sorted15", 17 * 1024 * 1024);
+	external_sort("32", "sorted32", 17 * 1024 * 1024);
 
 	std::ifstream output_first("sorted32"), output_second("sorted32");
 	data first, second;
