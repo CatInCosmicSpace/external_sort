@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -6,20 +7,21 @@
 #include <sstream>
 #include <vector>
 #include <memory>
-
+#include <set>
+#include <queue>
+#include <array>
+#include <functional>
 
 struct data {
-	std::string last_name;
-	std::string first_name;
+	std::string last_name; // probably size 50
+	std::string first_name; // probably size 50
 	uint16_t year;
-	
+
 	auto operator<(data const & data) const -> bool {
-		return  std::make_pair(last_name, first_name)
-			<   std::make_pair(data.last_name, data.first_name);
+		return  first_name < data.first_name;
 	}
 	auto operator<=(data const & data) const -> bool {
-		return      std::make_pair(static_cast<std::string>(last_name), static_cast<std::string>(first_name))
-			<=   std::make_pair(static_cast<std::string>(data.last_name), static_cast<std::string>(data.first_name));
+		return  first_name <= data.first_name;
 	}
 };
 
@@ -38,22 +40,24 @@ auto external_sort(const std::string && file_name, const std::string && output_n
 
 	size_t pieces;
 	{
-		std::unique_ptr<std::string[]> data_to_sort(new std::string[subpieces]);
+		std::unique_ptr<data[]> data_to_sort(new data[subpieces]);
 		for (pieces = 0; input; ++pieces) {
 			std::ofstream temp_file(to_string(pieces));
 			size_t i;
 			for (i = 0; i < subpieces; ++i) {
-				std::getline(input, data_to_sort[i]);
+				input >> data_to_sort[i].last_name >> data_to_sort[i].first_name >> data_to_sort[i].year;
+				//std::getline(input, data_to_sort[i]);
 				if (!input) {
 					break;
 				}
 			}
 			std::sort(data_to_sort.get(), data_to_sort.get() + i, [](const auto & a, const auto & b) {
-				return a < b;
+				return a.first_name < b.first_name;
 			});
 
 			for (size_t j = 0; j < i; ++j) {
-				temp_file << data_to_sort[j] << std::endl;
+				temp_file << data_to_sort[j].last_name << " " << data_to_sort[j].first_name << " " << data_to_sort[j].year << "\n";
+				//temp_file << data_to_sort[j] << std::endl;
 			}
 			temp_file.close();
 		}
@@ -61,17 +65,18 @@ auto external_sort(const std::string && file_name, const std::string && output_n
 	size_t toDelete = pieces;
 	std::ofstream sorted_file(output_name);
 	std::vector<std::ifstream *> files;
-	std::vector<std::string> datas;
+	std::vector<data> datas;
 	for (size_t i = 0; i < pieces; ++i) {
 		files.push_back(new std::ifstream());
 		(*files[i]).open(to_string(i));
-		datas.push_back(std::string());
+		datas.push_back(data());
 	}
 
 	for (size_t i = 0; i < pieces; ++i) {
-		std::getline((*files[i]), datas[i]);
+		(*files[i]) >> datas[i].last_name >> datas[i].first_name >> datas[i].year;
+		//std::getline((*files[i]), datas[i]);
 	}
-	for (int i = 0; i < pieces; ++i)
+	for (int i = 0; i < pieces; ++i) {
 		if (!(*files[i])) {
 			(*files[i]).close();
 			files.erase(files.begin() + i);
@@ -79,14 +84,17 @@ auto external_sort(const std::string && file_name, const std::string && output_n
 			--i;
 			--pieces;
 		}
+	}
 	while (pieces > 1) {
 		size_t minind = 0;
-		for (size_t i = 1; i < pieces; ++i)
-			if (datas[i] < datas[minind])
+		for (size_t i = 1; i < pieces; ++i) {
+			if (datas[i] < datas[minind]) {
 				minind = i;
-
-		sorted_file << datas[minind] << std::endl;
-		std::getline(*files[minind], datas[minind]);
+			}
+		}
+		sorted_file << datas[minind].last_name << " " << datas[minind].first_name << " " << datas[minind].year << "\n";
+		(*files[minind]) >> datas[minind].last_name >> datas[minind].first_name >> datas[minind].year;
+		//std::getline(*files[minind], datas[minind]);
 		if (!(*files[minind])) {
 			(*files[minind]).close();
 			files.erase(files.begin() + minind);
@@ -95,8 +103,9 @@ auto external_sort(const std::string && file_name, const std::string && output_n
 		}
 	}
 	while (*files[0]) {
-		sorted_file << datas[0] << std::endl;
-		std::getline(*files[0], datas[0]);
+		sorted_file << datas[0].last_name << " " << datas[0].first_name << " " << datas[0].year << "\n";
+		(*files[0]) >> datas[0].last_name >> datas[0].first_name >> datas[0].year;
+		//std::getline(*files[0], datas[0]);
 	}
 	(*files[0]).close();
 	files.clear();
