@@ -25,18 +25,18 @@ struct data {
 	}
 };
 
-auto external_sort(const std::string && file_name, const std::string && output_name, const uint_fast64_t && memory_size) -> void;
+auto external_sort(const std::string && file_name, const std::string && output_name, const uint_fast64_t && memory_size, const size_t exp_size = 65) -> void;
 
 auto gen_file(const std::string file_name, const uint_fast64_t file_size) -> void;
 
 auto to_string(const size_t sz) -> const std::string;
 
-auto external_sort(const std::string && file_name, const std::string && output_name, const uint_fast64_t && memory_size) -> void {
+auto external_sort(const std::string && file_name, const std::string && output_name, const uint_fast64_t && memory_size, const size_t exp_size = 65) -> void {
 	std::ifstream input(file_name);
 	if (input.bad()) {
 		throw std::bad_exception();
 	}
-	size_t subpieces = memory_size / 105;
+	size_t subpieces = memory_size / exp_size;
 
 	size_t pieces;
 	{
